@@ -11,13 +11,24 @@
         
         body {
             font-family: 'Heebo', sans-serif;
-            background-color: #fdfbf7; /* צבע שמנת */
-            color: #7f1d1d; /* אדום כהה מאוד */
+            background-color: #fdfbf7;
+            color: #7f1d1d;
             overflow-x: hidden;
         }
 
         .terminal-text {
             font-family: 'Fira Code', monospace;
+        }
+
+        /* Bi-directional isolation helpers */
+        .dir-ltr {
+            direction: ltr;
+            unicode-bidi: isolate;
+        }
+
+        .dir-rtl {
+            direction: rtl;
+            unicode-bidi: isolate;
         }
 
         /* Packet Animation */
@@ -71,22 +82,21 @@
 </head>
 <body class="min-h-screen flex flex-col pb-24">
 
-    <!-- כותרת ראשית עם אוואטר מטורלל -->
+    <!-- כותרת ראשית עם אוואטר -->
     <header class="bg-red-900 text-amber-50 p-4 md:p-5 shadow-xl flex justify-between items-center relative z-20 border-b-4 border-amber-500">
         <div class="flex items-center gap-4">
-            <!-- אוואטר מטורלל בכותרת -->
             <div class="relative group">
                 <div class="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-amber-400 overflow-hidden bg-slate-950 crazy-avatar animate-pulse flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
                     <img src="https://lh3.googleusercontent.com/d/1BHxytxfATgrv3wpk_8slqpRX08p2Dzml" alt="NAT Master Avatar" class="w-full h-full object-cover">
                 </div>
-                <span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-full uppercase border border-red-900 shadow">PRO</span>
+                <span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-full uppercase border border-red-900 shadow dir-ltr">PRO</span>
             </div>
             
             <div>
                 <h1 class="text-xl md:text-2xl font-black flex items-center gap-2">
-                    תרגול מתקדם: NAT & PAT
+                    תרגול מתקדם: <bdi dir="ltr">NAT &amp; PAT</bdi>
                 </h1>
-                <p class="text-xs md:text-sm text-red-200 mt-0.5">סימולטור פקודות Cisco אינטראקטיבי לבניית תצורות רשת</p>
+                <p class="text-xs md:text-sm text-red-200 mt-0.5">סימולטור פקודות <bdi dir="ltr">Cisco</bdi> אינטראקטיבי לבניית תצורות רשת</p>
             </div>
         </div>
 
@@ -106,22 +116,22 @@
                 <button onclick="toggleCheatSheet()" class="w-full bg-red-50 p-4 text-right text-red-800 font-bold flex justify-between items-center hover:bg-red-100 transition-colors">
                     <span class="flex items-center gap-2">
                         <i data-lucide="book-open" class="w-5 h-5 text-red-700"></i>
-                        תזכורת: מבני פקודות NAT נפוצים (לחץ לפתיחה/כינון)
+                        תזכורת: מבני פקודות <bdi dir="ltr">NAT</bdi> נפוצים (לחץ לפתיחה/כינון)
                     </span>
                     <i id="cheat-sheet-icon" data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300"></i>
                 </button>
                 <div id="cheat-sheet-content" class="p-4 hidden bg-white border-t border-red-100 text-xs md:text-sm text-red-950 space-y-2">
                     <div class="p-2 bg-red-50/50 rounded border border-red-100">
-                        <strong class="text-red-800">Static NAT:</strong> 
-                        <span class="terminal-text text-red-700 font-bold block dir-ltr text-left" dir="ltr">ip nat inside source static [local-ip] [global-ip]</span>
+                        <strong class="text-red-800"><bdi dir="ltr">Static NAT:</bdi></strong> 
+                        <span class="terminal-text text-red-700 font-bold block text-left dir-ltr" dir="ltr">ip nat inside source static [local-ip] [global-ip]</span>
                     </div>
                     <div class="p-2 bg-red-50/50 rounded border border-red-100">
-                        <strong class="text-red-800">Dynamic NAT:</strong> 
-                        <span class="terminal-text text-red-700 font-bold block dir-ltr text-left" dir="ltr">ip nat inside source list [acl] pool [pool-name]</span>
+                        <strong class="text-red-800"><bdi dir="ltr">Dynamic NAT:</bdi></strong> 
+                        <span class="terminal-text text-red-700 font-bold block text-left dir-ltr" dir="ltr">ip nat inside source list [acl] pool [pool-name]</span>
                     </div>
                     <div class="p-2 bg-red-50/50 rounded border border-red-100">
-                        <strong class="text-red-800">PAT (Overload):</strong> 
-                        <span class="terminal-text text-red-700 font-bold block dir-ltr text-left" dir="ltr">ip nat inside source list [acl] interface [int-name] overload</span>
+                        <strong class="text-red-800"><bdi dir="ltr">PAT (Overload):</bdi></strong> 
+                        <span class="terminal-text text-red-700 font-bold block text-left dir-ltr" dir="ltr">ip nat inside source list [acl] interface [int-name] overload</span>
                     </div>
                 </div>
             </div>
@@ -135,9 +145,9 @@
                     </h2>
                     <span id="task-type-badge" class="bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-300">משימה פעילה</span>
                 </div>
-                <p id="mission-text" class="text-lg leading-relaxed text-slate-800 font-semibold">
+                <div id="mission-text" class="text-lg leading-relaxed text-slate-800 font-semibold">
                     טוען משימה...
-                </p>
+                </div>
             </div>
 
             <!-- תרשים זרימה -->
@@ -155,8 +165,8 @@
                         <div class="bg-red-800 p-3.5 rounded-xl shadow-lg border border-red-600 text-white">
                             <i data-lucide="monitor" class="w-7 h-7"></i>
                         </div>
-                        <span id="src-label" class="text-xs font-mono font-bold mt-2 text-slate-800">---</span>
-                        <span class="text-[10px] text-red-600 font-bold uppercase">(Inside Local)</span>
+                        <span id="src-label" class="text-xs font-mono font-bold mt-2 text-slate-800 dir-ltr" dir="ltr">---</span>
+                        <span class="text-[10px] text-red-600 font-bold uppercase dir-ltr" dir="ltr">(Inside Local)</span>
                     </div>
 
                     <!-- Router -->
@@ -164,7 +174,7 @@
                         <div class="bg-slate-900 p-4 rounded-full shadow-xl border-2 border-amber-500 text-amber-400">
                             <i data-lucide="router" class="w-8 h-8"></i>
                         </div>
-                        <span class="text-xs font-bold mt-2 text-red-800">נתב Cisco</span>
+                        <span class="text-xs font-bold mt-2 text-red-800">נתב <bdi dir="ltr">Cisco</bdi></span>
                     </div>
 
                     <!-- Inside Global / Public -->
@@ -172,8 +182,8 @@
                         <div class="bg-stone-800 p-3.5 rounded-xl shadow-lg border border-stone-600 text-white">
                             <i data-lucide="globe" class="w-7 h-7"></i>
                         </div>
-                        <span id="dest-label" class="text-xs font-mono font-bold mt-2 text-slate-800">---</span>
-                        <span class="text-[10px] text-stone-600 font-bold uppercase">(Inside Global)</span>
+                        <span id="dest-label" class="text-xs font-mono font-bold mt-2 text-slate-800 dir-ltr" dir="ltr">---</span>
+                        <span class="text-[10px] text-stone-600 font-bold uppercase dir-ltr" dir="ltr">(Inside Global)</span>
                     </div>
                 </div>
             </div>
@@ -185,26 +195,26 @@
             <!-- בחירת סוג NAT -->
             <div class="bg-white rounded-xl p-5 shadow border border-red-200">
                 <label class="block text-sm font-bold text-red-900 mb-3 flex items-center gap-2">
-                    <i data-lucide="sliders" class="w-4 h-4"></i> בחר את סוג מנגנון ה-NAT למשימה זו:
+                    <i data-lucide="sliders" class="w-4 h-4"></i> בחר את סוג מנגנון ה-<bdi dir="ltr">NAT</bdi> למשימה זו:
                 </label>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs font-bold" id="mode-selector">
-                    <button onclick="setNatMode('static')" id="btn-mode-static" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100">Static NAT</button>
-                    <button onclick="setNatMode('dynamic')" id="btn-mode-dynamic" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100">Dynamic NAT</button>
-                    <button onclick="setNatMode('pat')" id="btn-mode-pat" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100">PAT (Overload)</button>
-                    <button onclick="setNatMode('interface')" id="btn-mode-interface" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100">Interface</button>
+                    <button onclick="setNatMode('static')" id="btn-mode-static" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100 dir-ltr" dir="ltr">Static NAT</button>
+                    <button onclick="setNatMode('dynamic')" id="btn-mode-dynamic" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100 dir-ltr" dir="ltr">Dynamic NAT</button>
+                    <button onclick="setNatMode('pat')" id="btn-mode-pat" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100 dir-ltr" dir="ltr">PAT (Overload)</button>
+                    <button onclick="setNatMode('interface')" id="btn-mode-interface" class="mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100 dir-ltr" dir="ltr">Interface</button>
                 </div>
             </div>
 
             <!-- מסוף Cisco -->
             <div class="bg-slate-950 border-2 border-slate-800 rounded-xl p-5 shadow-2xl flex flex-col h-64 relative">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3 text-xs font-mono text-slate-400">
-                    <span id="prompt-display" class="text-amber-400 font-bold">Router(config)#</span>
+                    <span id="prompt-display" class="text-amber-400 font-bold dir-ltr" dir="ltr">Router(config)#</span>
                     <button onclick="clearTerminal()" class="hover:text-red-400 transition-colors flex items-center gap-1">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> נקה מסוף
                     </button>
                 </div>
                 
-                <div id="terminal-screen" class="terminal-text text-lg text-amber-300 flex-grow overflow-y-auto whitespace-pre-wrap leading-relaxed tracking-wide" dir="ltr">_</div>
+                <div id="terminal-screen" class="terminal-text text-lg text-amber-300 flex-grow overflow-y-auto whitespace-pre-wrap leading-relaxed tracking-wide dir-ltr text-left" dir="ltr">_</div>
                 
                 <div class="flex justify-between items-center mt-4 pt-2 border-t border-slate-900">
                     <span id="selected-mode-tag" class="text-[11px] font-mono text-slate-500 uppercase">סוג: טרם נבחר</span>
@@ -220,7 +230,7 @@
                 <h3 class="text-sm font-bold text-red-900 mb-3 flex items-center gap-2">
                     <i data-lucide="key-round" class="w-4 h-4"></i> בנק רכיבי פקודה (לחץ להרכבה):
                 </h3>
-                <div id="word-bank" class="flex flex-wrap gap-2" dir="ltr"></div>
+                <div id="word-bank" class="flex flex-wrap gap-2 dir-ltr text-left" dir="ltr"></div>
             </div>
 
             <!-- משוב ורפלקציה -->
@@ -237,7 +247,7 @@
         </div>
     </main>
 
-    <!-- כפתור עזרה צף עם האוואטר המעודכן -->
+    <!-- כפתור עזרה צף -->
     <div class="fixed bottom-6 left-6 z-50 pointer-events-auto">
         <button id="openHelpModalBtn" class="flex items-center gap-3 bg-gradient-to-r from-red-700 to-red-900 hover:from-red-800 hover:to-red-950 text-white font-bold py-2.5 px-5 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 border border-amber-400/40 cursor-pointer">
             <div class="w-9 h-9 rounded-full border-2 border-amber-300 overflow-hidden bg-slate-950 flex-shrink-0 shadow">
@@ -247,7 +257,7 @@
         </button>
     </div>
 
-    <!-- חלונית עזרה צפה (Modal) עם האוואטר המעודכן והתיקון ללחיצות -->
+    <!-- חלונית עזרה צפה (Modal) -->
     <div id="helpModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 transition-all duration-300 pointer-events-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-sm w-full text-center relative shadow-2xl transform scale-95 transition-transform duration-300" id="helpModalContent">
             <button id="closeHelpModalBtn" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-slate-800 cursor-pointer">
@@ -259,7 +269,7 @@
             </div>
 
             <h3 class="text-lg font-black text-white mb-2">סתבכת עם הפקודה?</h3>
-            <p class="text-sm text-slate-400 mb-6 leading-relaxed">הבוט האישי של השיעור מוכן לעזור לך להבין את הרעיון שמאחורי הגדרת ה-NAT ולהנחות אותך!</p>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed">הבוט האישי של השיעור מוכן לעזור לך להבין את הרעיון שמאחורי הגדרת ה-<bdi dir="ltr">NAT</bdi> ולהנחות אותך!</p>
             
             <a href="https://gemini.google.com/gem/167016ac4a4b/66c3b83daa7940ef?usp=sharing" target="_blank" class="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 px-4 rounded-xl transition-all duration-200 shadow-lg cursor-pointer">
                 <span>התחל שיחה עם הבוט</span>
@@ -273,93 +283,93 @@
         const levels = [
             {
                 type: "static",
-                mission: "משימה 1 (Static NAT): עליך לאפשר גישה קבועה מבחוץ לשרת הארגוני 192.168.1.10. קשר אותו באופן סטטי לכתובת הציבורית החיצונית 200.100.10.1.",
+                mission: 'משימה 1 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Static NAT</span>): עליך לאפשר גישה קבועה מבחוץ לשרת הארגוני <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">192.168.1.10</span>. קשר אותו באופן סטטי לכתובת הציבורית החיצונית <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">200.100.10.1</span>.',
                 correct: ["ip", "nat", "inside", "source", "static", "192.168.1.10", "200.100.10.1"],
                 src: "192.168.1.10",
                 dest: "200.100.10.1",
                 prompt: "Router(config)#",
-                reflection: "למה Static NAT? מכיוון שהוא מקיים מיפוי חד-חד-ערכי (1:1) קבוע, המתאים במיוחד לשרתים פומביים בארגון."
+                reflection: 'למה <span dir="ltr" class="font-mono font-bold">Static NAT</span>? מכיוון שהוא מקיים מיפוי חד-חד-ערכי (1:1) קבוע, המתאים במיוחד לשרתים פומביים בארגון.'
             },
             {
                 type: "static",
-                mission: "משימה 2 (Static NAT): הגדר תרגום קבוע עבור שרת ה-Web הפנימי 192.168.1.20, כך שיופיע באינטרנט תחת הכתובת 200.100.10.2.",
+                mission: 'משימה 2 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Static NAT</span>): הגדר תרגום קבוע עבור שרת ה-<bdi dir="ltr">Web</bdi> הפנימי <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">192.168.1.20</span>, כך שיופיע באינטרנט תחת הכתובת <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">200.100.10.2</span>.',
                 correct: ["ip", "nat", "inside", "source", "static", "192.168.1.20", "200.100.10.2"],
                 src: "192.168.1.20",
                 dest: "200.100.10.2",
                 prompt: "Router(config)#",
-                reflection: "Static NAT מבטיח שכתובת ה-IP הציבורית לא תשתנה אף פעם, מה שמאפשר לשרתי DNS חיצוניים להפנות אליו גולשים באופן יציב."
+                reflection: '<span dir="ltr" class="font-mono font-bold">Static NAT</span> מבטיח שכתובת ה-<bdi dir="ltr">IP</bdi> הציבורית לא תשתנה אף פעם, מה שמאפשר לשרתי <bdi dir="ltr">DNS</bdi> חיצוניים להפנות אליו גולשים באופן יציב.'
             },
             {
                 type: "static",
-                mission: "משימה 3 (Static NAT): מחשב ניהול רגיש שכתובתו 192.168.1.50 חייב לקבל ייצוג ציבורי קבוע. קשר אותו סטטית לכתובת 200.100.10.50.",
+                mission: 'משימה 3 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Static NAT</span>): מחשב ניהול רגיש שכתובתו <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">192.168.1.50</span> חייב לקבל ייצוג ציבורי קבוע. קשר אותו סטטית לכתובת <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">200.100.10.50</span>.',
                 correct: ["ip", "nat", "inside", "source", "static", "192.168.1.50", "200.100.10.50"],
                 src: "192.168.1.50",
                 dest: "200.100.10.50",
                 prompt: "Router(config)#",
-                reflection: "מיפוי סטטי מעניק גישה דו-כיוונית: גם תנועה שיוצאת מהמחשב וגם תנועה שיזומות מבחוץ יגיעו ליעד המדויק."
+                reflection: 'מיפוי סטטי מעניק גישה דו-כיוונית: גם תנועה שיוצאת מהמחשב וגם תנועה שיזומות מבחוץ יגיעו ליעד המדויק.'
             },
             {
                 type: "dynamic",
-                mission: "משימה 4 (Dynamic NAT): הגדר NAT דינמי שיקשר בין העמדות ב-Access-List מספר 1 לבין בריכת הכתובות הציבוריות MY_POOL.",
+                mission: 'משימה 4 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Dynamic NAT</span>): הגדר <bdi dir="ltr">NAT</bdi> דינמי שיקשר בין העמדות ב-<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Access-List 1</span> לבין בריכת הכתובות הציבוריות <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">MY_POOL</span>.',
                 correct: ["ip", "nat", "inside", "source", "list", "1", "pool", "MY_POOL"],
                 src: "ACL 1",
                 dest: "MY_POOL",
                 prompt: "Router(config)#",
-                reflection: "ב-Dynamic NAT, הכתובות הציבוריות מוקצות לפי כלל 'כל הקודם זוכה' מתוך הבריכה (Pool) ומשתחררות בגמר התקשורת."
+                reflection: 'ב-<span dir="ltr" class="font-mono font-bold">Dynamic NAT</span>, הכתובות הציבוריות מוקצות לפי כלל "כל הקודם זוכה" מתוך הבריכה (<bdi dir="ltr">Pool</bdi>) ומשתחררות בגמר התקשורת.'
             },
             {
                 type: "dynamic",
-                mission: "משימה 5 (Dynamic NAT): חבר את עמדות הקצה המוגדרות ב-access-list 10 אל בריכת הכתובות OFFICE_POOL.",
+                mission: 'משימה 5 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Dynamic NAT</span>): חבר את עמדות הקצה המוגדרות ב-<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">access-list 10</span> אל בריכת הכתובות <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">OFFICE_POOL</span>.',
                 correct: ["ip", "nat", "inside", "source", "list", "10", "pool", "OFFICE_POOL"],
                 src: "ACL 10",
                 dest: "OFFICE_POOL",
                 prompt: "Router(config)#",
-                reflection: "רשימת הגישה (ACL) מנהלת את ההרשאות - רק כתובות שמוגדרות ב-ACL יורשו לקבל תרגום מתוך בריכת הכתובות."
+                reflection: 'רשימת הגישה (<bdi dir="ltr">ACL</bdi>) מנהלת את ההרשאות - רק כתובות שמוגדרות ב-<bdi dir="ltr">ACL</bdi> יורשו לקבל תרגום מתוך בריכת הכתובות.'
             },
             {
                 type: "dynamic",
-                mission: "משימה 6 (Dynamic NAT): קשר את רשימת הכתובות של רשת האורחים (access-list 5) אל בריכת הכתובות GUEST_POOL.",
+                mission: 'משימה 6 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Dynamic NAT</span>): קשר את רשימת הכתובות של רשת האורחים (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">access-list 5</span>) אל בריכת הכתובות <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">GUEST_POOL</span>.',
                 correct: ["ip", "nat", "inside", "source", "list", "5", "pool", "GUEST_POOL"],
                 src: "ACL 5",
                 dest: "GUEST_POOL",
                 prompt: "Router(config)#",
-                reflection: "אם כמות המחשבים שיוצאים לרשת עולה על מספר הכתובות ב-Pool, מחשבים נוספים ייחסמו עד שכתובת תתפנה!"
+                reflection: 'אם כמות המחשבים שיוצאים לרשת עולה על מספר הכתובות ב-<bdi dir="ltr">Pool</bdi>, מחשבים נוספים ייחסמו עד שכתובת תתפנה!'
             },
             {
                 type: "pat",
-                mission: "משימה 7 (PAT / Overload): הגדר תרגום מסוג Overload. קשר את עמדות access-list 1 לממשק היציאה GigabitEthernet0/0.",
+                mission: 'משימה 7 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">PAT / Overload</span>): הגדר תרגום מסוג <bdi dir="ltr">Overload</bdi>. קשר את עמדות <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">access-list 1</span> לממשק היציאה <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">GigabitEthernet0/0</span>.',
                 correct: ["ip", "nat", "inside", "source", "list", "1", "interface", "GigabitEthernet0/0", "overload"],
                 src: "ACL 1",
                 dest: "Gi0/0 (PAT)",
                 prompt: "Router(config)#",
-                reflection: "PAT (Port Address Translation) משתמש במספרי פורטים שונים כדי לאפשר למאות תחנות לשתף כתובת IP ציבורית אחת בלבד!"
+                reflection: '<span dir="ltr" class="font-mono font-bold">PAT (Port Address Translation)</span> משתמש במספרי פורטים שונים כדי לאפשר למאות תחנות לשתף כתובת <bdi dir="ltr">IP</bdi> ציבורית אחת בלבד!'
             },
             {
                 type: "pat",
-                mission: "משימה 8 (PAT / Overload): אפשר לעובדים המוגדרים ב-access-list 20 לצאת לאינטרנט דרך ממשק Serial0/1/0 באמצעות Overload.",
+                mission: 'משימה 8 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">PAT / Overload</span>): אפשר לעובדים המוגדרים ב-<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">access-list 20</span> לצאת לאינטרנט דרך ממשק <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">Serial0/1/0</span> באמצעות <bdi dir="ltr">Overload</bdi>.',
                 correct: ["ip", "nat", "inside", "source", "list", "20", "interface", "Serial0/1/0", "overload"],
                 src: "ACL 20",
                 dest: "Se0/1/0 (PAT)",
                 prompt: "Router(config)#",
-                reflection: "מילת המפתח 'overload' היא זו שמודיעה לנתב לעקוב אחר מספרי הפורטים בשכבת התעבורה (Layer 4)."
+                reflection: 'מילת המפתח <span dir="ltr" class="font-mono font-bold">overload</span> היא זו שמודיעה לנתב לעקוב אחר מספרי הפורטים בשכבת התעבורה (<bdi dir="ltr">Layer 4</bdi>).'
             },
             {
                 type: "pat",
-                mission: "משימה 9 (PAT / Overload מבוסס Pool): הגדר תרגום Overload עבור access-list 1 מול בריכת הכתובות NET_POOL.",
+                mission: 'משימה 9 (<span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">PAT / Overload</span> מבוסס <bdi dir="ltr">Pool</bdi>): הגדר תרגום <bdi dir="ltr">Overload</bdi> עבור <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">access-list 1</span> מול בריכת הכתובות <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">NET_POOL</span>.',
                 correct: ["ip", "nat", "inside", "source", "list", "1", "pool", "NET_POOL", "overload"],
                 src: "ACL 1",
                 dest: "NET_POOL (PAT)",
                 prompt: "Router(config)#",
-                reflection: "שילוב של Pool עם Overload מעניק שפע של כתובות ופורטים, מתאים במיוחד לארגוני ענק עם אלפי משתמשים."
+                reflection: 'שילוב של <bdi dir="ltr">Pool</bdi> עם <bdi dir="ltr">Overload</bdi> מעניק שפע של כתובות ופורטים, מתאים במיוחד לארגוני ענק עם אלפי משתמשים.'
             },
             {
                 type: "interface",
-                mission: "משימה 10 (כיווניות ממשק): הגדר את הממשק הפנימי GigabitEthernet0/1 המחובר ל-LAN כממשק ה-Inside של ה-NAT.",
+                mission: 'משימה 10 (כיווניות ממשק): הגדר את הממשק הפנימי <span dir="ltr" class="font-mono bg-red-100 text-red-900 px-1 rounded">GigabitEthernet0/1</span> המחובר ל-<bdi dir="ltr">LAN</bdi> כממשק ה-<bdi dir="ltr">Inside</bdi> של ה-<bdi dir="ltr">NAT</bdi>.',
                 correct: ["ip", "nat", "inside"],
                 src: "LAN",
                 dest: "Gi0/1 Interface",
                 prompt: "Router(config-if)#",
-                reflection: "ללא הגדרת ip nat inside ו-ip nat outside על הממשקים, הנתב לא ידע איפה לבצע את התרגום בפועל!"
+                reflection: 'ללא הגדרת <span dir="ltr" class="font-mono font-bold">ip nat inside</span> ו-<span dir="ltr" class="font-mono font-bold">ip nat outside</span> על הממשקים, הנתב לא ידע איפה לבצע את התרגום בפועל!'
             }
         ];
 
@@ -380,7 +390,7 @@
             
             document.getElementById('level-display').innerText = currentLevel + 1;
             document.getElementById('total-levels').innerText = levels.length;
-            document.getElementById('mission-text').innerText = levels[currentLevel].mission;
+            document.getElementById('mission-text').innerHTML = levels[currentLevel].mission;
             document.getElementById('src-label').innerText = levels[currentLevel].src;
             document.getElementById('dest-label').innerText = levels[currentLevel].dest;
             document.getElementById('prompt-display').innerText = levels[currentLevel].prompt;
@@ -407,7 +417,7 @@
 
         function resetModeButtons() {
             document.querySelectorAll('.mode-btn').forEach(btn => {
-                btn.className = "mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100 font-bold";
+                btn.className = "mode-btn p-2.5 rounded-lg border text-center transition-all bg-red-50 border-red-200 text-red-900 hover:bg-red-100 font-bold dir-ltr";
             });
             document.getElementById('selected-mode-tag').innerText = "סוג: טרם נבחר";
         }
@@ -418,7 +428,8 @@
             
             allWords.forEach(word => {
                 const btn = document.createElement('button');
-                btn.className = "bg-red-50 hover:bg-red-700 hover:text-white text-red-900 font-mono text-xs md:text-sm px-3 py-1.5 rounded border border-red-200 shadow-sm transition-all word-btn font-bold cursor-pointer";
+                btn.className = "bg-red-50 hover:bg-red-700 hover:text-white text-red-900 font-mono text-xs md:text-sm px-3 py-1.5 rounded border border-red-200 shadow-sm transition-all word-btn font-bold cursor-pointer dir-ltr";
+                btn.setAttribute("dir", "ltr");
                 btn.innerText = word;
                 btn.onclick = () => addWord(word);
                 bank.appendChild(btn);
@@ -454,7 +465,7 @@
                 titleEl.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i> ${title}`;
                 
                 if(reflection) {
-                    refText.innerText = reflection;
+                    refText.innerHTML = reflection;
                     refBox.classList.remove('hidden');
                 } else {
                     refBox.classList.add('hidden');
@@ -465,7 +476,7 @@
                 refBox.classList.add('hidden');
             }
             
-            textEl.innerText = text;
+            textEl.innerHTML = text;
             box.classList.remove('hidden');
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
@@ -492,12 +503,12 @@
             const currentLevelData = levels[currentLevel];
 
             if (!selectedMode) {
-                showFeedback("שימו לב:", "נא לבחור את סוג מנגנון ה-NAT המתאים למשימה בלחיצה על אחד מלחצני הבחירה למעלה.", false);
+                showFeedback("שימו לב:", 'נא לבחור את סוג מנגנון ה-<bdi dir="ltr">NAT</bdi> המתאים למשימה בלחיצה על אחד מלחצני הבחירה למעלה.', false);
                 return;
             }
 
             if (selectedMode !== currentLevelData.type) {
-                showFeedback("סוג מנגנון לא תואם", `בחרת במנגנון ${selectedMode.toUpperCase()} אך המשימה דורשת מנגנון מסוג ${currentLevelData.type.toUpperCase()}.`, false);
+                showFeedback("סוג מנגנון לא תואם", `בחרת במנגנון <span dir="ltr" class="font-mono font-bold">${selectedMode.toUpperCase()}</span> אך המשימה דורשת מנגנון מסוג <span dir="ltr" class="font-mono font-bold">${currentLevelData.type.toUpperCase()}</span>.`, false);
                 triggerPacketAnimation('deny');
                 return;
             }
@@ -506,7 +517,7 @@
             
             for (let i = 0; i < userCommand.length; i++) {
                 if (userCommand[i] !== targetAnswer[i]) {
-                    showFeedback("שגיאה בתחביר הפקודה", `רכיב מספר ${i+1} בפקודה (${userCommand[i]}) אינו במקום הנכון. בדוק את סדר הרכיבים לפי המבנה המבוקש.`, false);
+                    showFeedback("שגיאה בתחביר הפקודה", `רכיב מספר ${i+1} בפקודה (<span dir="ltr" class="font-mono font-bold">${userCommand[i]}</span>) אינו במקום הנכון. בדוק את סדר הרכיבים לפי המבנה המבוקש.`, false);
                     triggerPacketAnimation('deny');
                     return;
                 }
@@ -525,7 +536,7 @@
                     currentLevel++;
                     initLevel();
                 } else {
-                    showFeedback("🏆 אלופה / אלוף! סיימת את כל השלבים!", "שולט/ת באופן מושלם בכל מנגנוני ה-NAT וה-PAT בנתבי Cisco!", true);
+                    showFeedback("🏆 אלופה / אלוף! סיימת את כל השלבים!", 'שולט/ת באופן מושלם בכל מנגנוני ה-<bdi dir="ltr">NAT</bdi> וה-<bdi dir="ltr">PAT</bdi> בנתבי <bdi dir="ltr">Cisco</bdi>!', true);
                 }
             }, 3500);
         }
