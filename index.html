@@ -78,6 +78,16 @@
         .crazy-avatar {
             box-shadow: 0 0 15px #f59e0b, 0 0 30px #ef4444;
         }
+
+        /* Interactive Terminal Token */
+        .cmd-token {
+            transition: all 0.15s ease;
+        }
+        .cmd-token:hover {
+            background-color: rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            text-decoration: line-through;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col pb-24">
@@ -209,16 +219,22 @@
             <div class="bg-slate-950 border-2 border-slate-800 rounded-xl p-5 shadow-2xl flex flex-col h-64 relative">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3 text-xs font-mono text-slate-400">
                     <span id="prompt-display" class="text-amber-400 font-bold dir-ltr" dir="ltr">Router(config)#</span>
-                    <button onclick="clearTerminal()" class="hover:text-red-400 transition-colors flex items-center gap-1">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> נקה מסוף
-                    </button>
+                    <div class="flex gap-3 items-center">
+                        <button onclick="removeLastWord()" class="hover:text-amber-300 transition-colors flex items-center gap-1 text-slate-400">
+                            <i data-lucide="delete" class="w-3.5 h-3.5"></i> מחק מילה אחרונה
+                        </button>
+                        <span class="text-slate-700">|</span>
+                        <button onclick="clearTerminal()" class="hover:text-red-400 transition-colors flex items-center gap-1">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> נקה מסוף
+                        </button>
+                    </div>
                 </div>
                 
-                <div id="terminal-screen" class="terminal-text text-lg text-amber-300 flex-grow overflow-y-auto whitespace-pre-wrap leading-relaxed tracking-wide dir-ltr text-left" dir="ltr">_</div>
+                <div id="terminal-screen" class="terminal-text text-lg text-amber-300 flex-grow overflow-y-auto leading-relaxed tracking-wide dir-ltr text-left flex flex-wrap items-center gap-x-2 gap-y-1 content-start" dir="ltr">_</div>
                 
                 <div class="flex justify-between items-center mt-4 pt-2 border-t border-slate-900">
                     <span id="selected-mode-tag" class="text-[11px] font-mono text-slate-500 uppercase">סוג: טרם נבחר</span>
-                    <button onclick="executeCommand()" class="bg-red-700 hover:bg-red-600 text-white font-bold px-6 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-all word-btn text-sm">
+                    <button onclick="executeCommand()" class="bg-red-700 hover:bg-red-600 text-white font-bold px-6 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-all word-btn text-sm cursor-pointer">
                         <span>הרץ פקודה</span>
                         <i data-lucide="play" class="w-4 h-4 fill-current"></i>
                     </button>
@@ -441,6 +457,18 @@
             updateTerminal();
         }
 
+        function removeWordAt(index) {
+            userCommand.splice(index, 1);
+            updateTerminal();
+        }
+
+        function removeLastWord() {
+            if (userCommand.length > 0) {
+                userCommand.pop();
+                updateTerminal();
+            }
+        }
+
         function clearTerminal() {
             userCommand = [];
             updateTerminal();
@@ -449,8 +477,36 @@
 
         function updateTerminal() {
             const screen = document.getElementById('terminal-screen');
-            const modePrefix = selectedMode ? `[Mode: ${selectedMode.toUpperCase()}] ` : '';
-            screen.innerText = modePrefix + (userCommand.length === 0 ? "_" : userCommand.join(" ") + " _");
+            screen.innerHTML = '';
+
+            if (selectedMode) {
+                const modeSpan = document.createElement('span');
+                modeSpan.className = "text-slate-500 font-normal mr-1 select-none text-sm";
+                modeSpan.innerText = `[Mode: ${selectedMode.toUpperCase()}]`;
+                screen.appendChild(modeSpan);
+            }
+
+            if (userCommand.length === 0) {
+                const emptyCursor = document.createElement('span');
+                emptyCursor.className = "text-amber-400 font-bold animate-pulse";
+                emptyCursor.innerText = "_";
+                screen.appendChild(emptyCursor);
+                return;
+            }
+
+            userCommand.forEach((word, index) => {
+                const token = document.createElement('span');
+                token.className = "cmd-token bg-slate-900 text-amber-300 hover:text-red-300 font-bold px-1.5 py-0.5 rounded border border-slate-800 cursor-pointer text-base inline-flex items-center gap-1 group";
+                token.title = "לחץ למחיקת מילה זו";
+                token.innerHTML = `${word}<span class="text-[10px] text-slate-600 group-hover:text-red-400 font-sans">✕</span>`;
+                token.onclick = () => removeWordAt(index);
+                screen.appendChild(token);
+            });
+
+            const cursor = document.createElement('span');
+            cursor.className = "text-amber-400 font-bold animate-pulse ml-1";
+            cursor.innerText = "_";
+            screen.appendChild(cursor);
         }
 
         function showFeedback(title, text, isSuccess, reflection = "") {
