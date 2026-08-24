@@ -88,6 +88,29 @@
             color: #fca5a5;
             text-decoration: line-through;
         }
+
+        /* Teacher Badge & Panel Styles */
+        .teacher-panel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #7f1d1d;
+            color: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .teacher-panel-badge:hover {
+            background-color: #b91c1c;
+            color: #ffffff;
+            transform: translateY(-2deg);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col pb-24">
@@ -260,6 +283,32 @@
                 </div>
             </div>
 
+            <!-- חלונית מורה + פתרונות נסתרים -->
+            <div class="flex flex-col items-start gap-3">
+                <button onclick="unlockTeacherAnswers()" class="teacher-panel-badge">
+                    <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
+                    <span>מורה</span>
+                </button>
+
+                <div id="teacher-answers-box" class="hidden w-full bg-slate-900 border-2 border-green-500 rounded-xl p-5 text-slate-200 text-sm shadow-xl dir-rtl">
+                    <h3 class="text-green-400 font-bold text-base mb-2 flex items-center gap-2">
+                        <i data-lucide="key" class="w-5 h-5"></i> פתרונות מלאים למשימות (חלונית מורה)
+                    </h3>
+                    <ol class="list-decimal list-inside space-y-2 text-xs md:text-sm text-slate-300 font-mono dir-ltr text-left">
+                        <li><span class="text-amber-400">[Static]</span> ip nat inside source static 192.168.1.10 200.100.10.1</li>
+                        <li><span class="text-amber-400">[Static]</span> ip nat inside source static 192.168.1.20 200.100.10.2</li>
+                        <li><span class="text-amber-400">[Static]</span> ip nat inside source static 192.168.1.50 200.100.10.50</li>
+                        <li><span class="text-amber-400">[Dynamic]</span> ip nat inside source list 1 pool MY_POOL</li>
+                        <li><span class="text-amber-400">[Dynamic]</span> ip nat inside source list 10 pool OFFICE_POOL</li>
+                        <li><span class="text-amber-400">[Dynamic]</span> ip nat inside source list 5 pool GUEST_POOL</li>
+                        <li><span class="text-amber-400">[PAT]</span> ip nat inside source list 1 interface GigabitEthernet0/0 overload</li>
+                        <li><span class="text-amber-400">[PAT]</span> ip nat inside source list 20 interface Serial0/1/0 overload</li>
+                        <li><span class="text-amber-400">[PAT]</span> ip nat inside source list 1 pool NET_POOL overload</li>
+                        <li><span class="text-amber-400">[Interface]</span> ip nat inside</li>
+                    </ol>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -399,6 +448,19 @@
         let currentLevel = 0;
         let selectedMode = null;
         let userCommand = [];
+
+        function unlockTeacherAnswers() {
+            const password = prompt("הכנס סיסמת מורה:");
+            if (password === "sahar") {
+                const box = document.getElementById("teacher-answers-box");
+                box.classList.toggle("hidden");
+                if (!box.classList.contains("hidden")) {
+                    box.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (password !== null) {
+                alert("סיסמה שגויה!");
+            }
+        }
 
         function initLevel() {
             userCommand = [];
@@ -597,7 +659,6 @@
             }, 3500);
         }
 
-        // ניהול החלונית הציפה והאירועים
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
@@ -616,19 +677,11 @@
                 setTimeout(() => modal.classList.add('hidden'), 150);
             }
 
-            if(openBtn) {
-                openBtn.addEventListener('click', openModal);
-            }
-
-            if(closeBtn) {
-                closeBtn.addEventListener('click', closeModal);
-            }
-
+            if(openBtn) openBtn.addEventListener('click', openModal);
+            if(closeBtn) closeBtn.addEventListener('click', closeModal);
             if(modal) {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeModal();
-                    }
+                    if (e.target === modal) closeModal();
                 });
             }
 
